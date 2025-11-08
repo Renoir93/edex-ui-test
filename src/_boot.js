@@ -211,6 +211,35 @@ function createWindow(settings) {
 
     signale.complete("Frontend window created!");
     win.show();
+
+	    // Security headers implementation
+    win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+        callback({
+            responseHeaders: {
+                ...details.responseHeaders,
+                'Content-Security-Policy': [
+                    "default-src 'self';",
+                    "script-src 'self' 'unsafe-inline' 'unsafe-eval';",
+                    "style-src 'self' 'unsafe-inline';",
+                    "img-src 'self' data: file:;",
+                    "font-src 'self' data:;",
+                    "connect-src 'self' ws://localhost:* ws://127.0.0.1:*;",
+                    "media-src 'self';",
+                    "object-src 'none';",
+                    "base-uri 'self';",
+                    "form-action 'self';",
+                    "frame-ancestors 'none';",
+                    "upgrade-insecure-requests"
+                ].join(' '),
+                'X-Content-Type-Options': ['nosniff'],
+                'X-Frame-Options': ['DENY'],
+                'X-XSS-Protection': ['1; mode=block'],
+                'Referrer-Policy': ['no-referrer'],
+                'Permissions-Policy': ['geolocation=(), microphone=(), camera=()']
+            }
+        });
+    });
+    signale.info("Security headers configured");
     if (!settings.allowWindowed) {
         win.setResizable(false);
     } else if (!require(lastWindowStateFile)["useFullscreen"]) {
