@@ -422,14 +422,41 @@ class Terminal {
             this.wss = new this.Websocket({
                 port: this.port,
                 clientTracking: true,
-                verifyClient: info => {
+verifyClient: info => {
+                    // SECURITY FIX: Validate WebSocket origin to prevent CSWH attacks (CVE-2023-30856)
+                    const allowedOrigins = [
+                        'http://localhost',
+                        'http://127.0.0.1',
+                        `http://localhost:${this.port}`,
+                        `http://127.0.0.1:${this.port}`
+                    ];
+                    
+                    // Check if we've reached the client limit
                     if (this.wss.clients.length >= 1) {
+                        console.log('[Security] WebSocket connection rejected: Maximum clients reached');
                         return false;
-                    } else {
+                    }
+                    
+                    // Validate origin header
+                    const origin = info.origin || info.req.headers.origin;
+                    
+                    // Allow connections from Electron renderer (no origin header)
+                    if (!origin) {
+                        console.log('[Security] WebSocket connection accepted: Electron renderer process');
                         return true;
                     }
-                }
-            });
+                    
+                    // Check if origin is in allowed list
+                    const isAllowed = allowedOrigins.some(allowed => origin.startsWith(allowed));
+                    
+                    if (!isAllowed) {
+                        console.log(`[Security] WebSocket connection rejected: Untrusted origin ${origin}`);
+                        return false;
+                    }
+                    
+                    console.log(`[Security] WebSocket connection accepted from origin: ${origin}`);
+                    return true;
+                },
             this.Ipc.on("terminal_channel-"+this.port, (e, ...args) => {
                 switch(args[0]) {
                     case "Renderer startup":
