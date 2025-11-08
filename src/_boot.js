@@ -192,11 +192,11 @@ function createWindow(settings) {
         backgroundColor: '#000000',
         webPreferences: {
             devTools: true,
-	    enableRemoteModule: true,
-            contextIsolation: false,
+            // enableRemoteModule: true,  // DEPRECATED - Disabled for security            
+            contextIsolation: false,  // TODO: Enable for better security with preload script
             backgroundThrottling: false,
             webSecurity: true,
-            nodeIntegration: true,
+            nodeIntegration: true,  // SECURITY: Required for terminal functionality
             nodeIntegrationInSubFrames: false,
             allowRunningInsecureContent: false,
             experimentalFeatures: settings.experimentalFeatures || false
