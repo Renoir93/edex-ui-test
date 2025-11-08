@@ -37,8 +37,25 @@ It might or might not be a joke taken too seriously.
 
 ---
 
+## ⚠️ Security Notice
+
+**This is a security-hardened fork of the archived eDEX-UI project.** The original project was archived in October 2021 and contains several known security vulnerabilities.
+
+This fork addresses the following security issues:
+
+- **CVE-2023-30856**: Fixed Cross-Site WebSocket Hijacking vulnerability that could allow remote code execution
+- **CVE-2024-37890**: Updated `ws` library to fix DoS vulnerability
+- **Outdated Electron**: Updated from Electron 12 (2021) to Electron 25.9.8 with security patches
+- **Missing Security Headers**: Added Content-Security-Policy, X-Frame-Options, and other protective headers
+- **Unsafe BrowserWindow Config**: Hardened Electron security settings while preserving terminal functionality
+
+**For detailed information** about the security improvements, see [SECURITY_FIXES.md](SECURITY_FIXES.md).
+
+**Note**: Terminal functionality has been fully preserved. All features work exactly as in the original.
+
+
 <p align="center">
-  <em>Jump to: <br><a href="#features">Features</a> — <a href="#screenshots">Screenshots</a> — <a href="#qa">Questions & Answers</a> — <strong><a href="#how-do-i-get-it">Download</a></strong> — <a href="#featured-in">Featured In</a> — <a href="#useful-commands-for-the-nerds">Contributor Instructions</a> — <a href="#credits">Credits</a></em>
+  <em>Jump to: <br><a href="#%EF%B8%8F-security-notice"><strong>⚠️ Security Notice</strong></a> — <a href="#features">Features</a> — <a href="#screenshots">Screenshots</a> — <a href="#qa">Questions & Answers</a> — <strong><a href="#how-do-i-get-it">Download</a></strong> — <a href="#featured-in">Featured In</a> — <a href="#useful-commands-for-the-nerds">Contributor Instructions</a> — <a href="#credits">Credits</a></em>
 </p>
 
 ## Sponsor
