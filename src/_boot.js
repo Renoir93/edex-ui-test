@@ -193,7 +193,8 @@ function createWindow(settings) {
         webPreferences: {
             devTools: true,
             // enableRemoteModule: true,  // DEPRECATED - Disabled for security            
-            contextIsolation: false,  // TODO: Enable for better security with preload script
+			preload: path.join(__dirname, '_preload.js'),
+            contextIsolation: true,  // SECURITY: Context isolation enabled with preload script
             backgroundThrottling: false,
             webSecurity: true,
             nodeIntegration: true,  // SECURITY: Required for terminal functionality
